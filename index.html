@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guide de l’application Mon Éco Conso</title>
+<meta name="description" content="Installer et utiliser l’application Mon Éco Conso : guide pas à pas et vidéo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17324d;
+    --text: #2b3a4a;
+    --muted: #5d6b7a;
+    --paper: #fbfcfd;
+    --wash: #eaf1f7;
+    --line: #c9d7e4;
+    --go: #1f7a4d;
+    --go-ink: #ffffff;
+    --warn-bg: #fff4e0;
+    --warn-line: #e3a23b;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #dbe8f5; --text: #c9d4df; --muted: #93a3b3;
+      --paper: #13202c; --wash: #1c2c3b; --line: #2f4356;
+      --go: #3fae78; --go-ink: #0d1a14;
+      --warn-bg: #33291a; --warn-line: #c98a2c;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #dbe8f5; --text: #c9d4df; --muted: #93a3b3;
+    --paper: #13202c; --wash: #1c2c3b; --line: #2f4356;
+    --go: #3fae78; --go-ink: #0d1a14;
+    --warn-bg: #33291a; --warn-line: #c98a2c;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 64px); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--text);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  img { max-width: 100%; height: auto; }
+  a { color: var(--go); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--go); outline-offset: 3px; border-radius: 4px; }
+
+  /* Navigation */
+  nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  nav ul {
+    list-style: none; margin: 0 auto; padding: 0 1rem;
+    max-width: 44rem; display: flex; gap: 1.25rem; overflow-x: auto;
+  }
+  nav a {
+    display: block; padding: .85rem 0; white-space: nowrap;
+    color: var(--ink); text-decoration: none; font-weight: 700; font-size: .95rem;
+  }
+  nav a:hover { color: var(--go); }
+
+  main { max-width: 44rem; margin: 0 auto; padding: 0 1rem 3rem; }
+
+  header.intro { padding: 2.5rem 0 1.5rem; }
+  header.intro h1 {
+    color: var(--ink); font-size: clamp(1.8rem, 6vw, 2.5rem);
+    line-height: 1.15; margin: 0 0 .75rem;
+  }
+  header.intro p { margin: 0; max-width: 34rem; color: var(--muted); font-size: 1.125rem; }
+
+  section { padding-top: 2rem; }
+  h2 { color: var(--ink); font-size: 1.5rem; line-height: 1.25; margin: 0 0 1rem; }
+
+  /* Étapes : un fil vertical relie les numéros */
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  ol.steps > li {
+    position: relative; counter-increment: step;
+    padding: 0 0 2.25rem 3.5rem;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 2.25rem; height: 2.25rem; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--ink); color: var(--paper);
+    font-weight: 700; font-size: 1.05rem;
+  }
+  ol.steps > li::after {
+    content: ""; position: absolute; left: calc(1.125rem - 1px); top: 2.5rem; bottom: .25rem;
+    width: 2px; background: var(--line);
+  }
+  ol.steps > li:last-child { padding-bottom: .5rem; }
+  ol.steps > li:last-child::after { display: none; }
+  ol.steps h3 { color: var(--ink); font-size: 1.2rem; margin: .3rem 0 .5rem; line-height: 1.3; }
+  ol.steps p { margin: 0 0 .75rem; }
+
+  .btn {
+    display: inline-block; background: var(--go); color: var(--go-ink);
+    font-weight: 700; text-decoration: none;
+    padding: .8rem 1.4rem; border-radius: 999px; margin: .25rem 0 1rem;
+  }
+  .btn:hover { filter: brightness(1.08); }
+
+  /* Captures d'écran : défilement horizontal sur petit écran */
+  .shots {
+    display: flex; gap: 1rem; overflow-x: auto;
+    padding: .25rem 0 1rem; margin-bottom: .5rem;
+    scroll-snap-type: x mandatory;
+  }
+  .shots figure { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
+  .shots img {
+    display: block; width: 250px;
+    border: 1px solid var(--line); border-radius: 14px;
+    background: var(--wash);
+  }
+  .shots figcaption { font-size: .875rem; color: var(--muted); margin-top: .35rem; max-width: 250px; }
+  .qr img { width: 150px; border-radius: 8px; border: 1px solid var(--line); background: #fff; padding: 6px; }
+
+  .note {
+    background: var(--wash); border-radius: 10px;
+    padding: .9rem 1.1rem; margin: 0 0 1rem;
+  }
+  .note strong { color: var(--ink); }
+
+
+  /* Messages d'avertissement repliables */
+  details {
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--wash); margin: 0 0 .6rem;
+  }
+  summary {
+    cursor: pointer; padding: .75rem 1rem; font-weight: 700; color: var(--ink);
+    list-style-position: inside;
+  }
+  details[open] summary { border-bottom: 1px solid var(--line); }
+  details > p, details > .shots { margin-left: 1rem; margin-right: 1rem; }
+  details > p:first-of-type { margin-top: .75rem; }
+  .shots figcaption { font-size: .875rem; }
+
+  /* Vidéo */
+  .video {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    border-radius: 12px; overflow: hidden; background: var(--wash);
+    border: 1px solid var(--line);
+  }
+  .video iframe, .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video .placeholder {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    padding: 1rem; text-align: center; color: var(--muted);
+  }
+
+  /* Aide */
+  .help {
+    background: var(--warn-bg); border-left: 4px solid var(--warn-line);
+    border-radius: 0 10px 10px 0; padding: 1rem 1.2rem;
+  }
+  .help p { margin: 0 0 .5rem; }
+  .help p:last-child { margin: 0; }
+  .help a { font-weight: 700; word-break: break-all; }
+
+  footer { max-width: 44rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; color: var(--muted); font-size: .875rem; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<nav aria-label="Sections du guide">
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#video">Vidéo</a></li>
+    <li><a href="#utilisation">Utilisation</a></li>
+    <li><a href="#aide">Aide</a></li>
+  </ul>
+</nav>
+
+<main>
+  <header class="intro">
+    <h1>Guide de l’application Mon Éco Conso</h1>
+    <p>Tout ce qu’il faut pour installer l’application sur votre smartphone et la faire fonctionner pendant l’étude. Gardez cette page, elle reste disponible à tout moment.</p>
+  </header>
+
+  <section id="installation" aria-labelledby="titre-installation">
+    <h2 id="titre-installation">Installer l’application</h2>
+
+    <ol class="steps">
+      <li>
+        <h3>Télécharger l’application</h3>
+        <p>Depuis votre téléphone, appuyez sur le bouton ci-dessous :</p>
+        <!-- LIEN À VÉRIFIER : c'est l'adresse du pilote. Remplacez-la si l'étude principale utilise un autre lien. -->
+        <a class="btn" href="https://homeacm1.orange-labs.fr/pilotemonecoconso/index.html" target="_blank" rel="noopener">Télécharger l’application</a>
+        <p>Si vous lisez cette page sur un ordinateur, scannez plutôt ce QR code avec votre téléphone :</p>
+        <p class="qr"><img src="images/qrcodeinstall.png" alt="QR code pour télécharger l’application Mon Éco Conso" width="150" height="150"></p>
+        <p>L’application n’est pas sur le Play Store : votre téléphone va donc afficher un ou plusieurs messages d’avertissement. C’est normal. Suivez les indications ci-dessous selon ce qui s’affiche.</p>
+
+        <details>
+          <summary>« Fichier potentiellement dangereux »</summary>
+          <p>Appuyez sur <strong>Télécharger quand même</strong>.</p>
+          <div class="shots">
+            <figure><img src="images/avertissement-telechargement.jpeg" alt="Message Fichier potentiellement dangereux, avec le bouton Télécharger quand même" loading="lazy"></figure>
+          </div>
+        </details>
+
+        <details>
+          <summary>« L’installation d’applis inconnues n’est pas autorisée »</summary>
+          <p>Appuyez sur <strong>Paramètres</strong>, puis activez l’interrupteur à côté de votre navigateur (par exemple Chrome). Revenez ensuite en arrière pour poursuivre l’installation.</p>
+          <div class="shots">
+            <figure><img src="images/chrome-sources-inconnues.jpeg" alt="Message de Chrome indiquant que l’installation d’applis inconnues n’est pas autorisée" loading="lazy"></figure>
+            <figure><img src="images/chrome-autoriser.jpeg" alt="Liste Installation applis inconnues, interrupteur de Chrome activé" loading="lazy"></figure>
+          </div>
+        </details>
+
+        <details>
+          <summary>Sur un téléphone Xiaomi : « Danger » ou « Application risquée »</summary>
+          <p>Sur l’écran « Danger », cochez la case « Je suis conscient des risques… », puis appuyez sur <strong>OK</strong>.</p>
+          <p>Si l’écran « Application risquée » apparaît ensuite, appuyez sur <strong>Sauter</strong> pour continuer l’installation.</p>
+          <div class="shots">
+            <figure><img src="images/xiaomi-danger.jpeg" alt="Écran Danger de Xiaomi avec la case à cocher et le bouton OK" loading="lazy"></figure>
+            <figure><img src="images/xiaomi-miprotect.jpeg" alt="Écran Application risquée de Mi Protect avec les boutons Sauter et Scanner" loading="lazy"></figure>
+          </div>
+        </details>
+      </li>
+
+      <li>
+        <h3>Installer puis ouvrir l’application</h3>
+        <p>Appuyez sur <strong>Installer</strong> et attendez la fin de l’installation. Appuyez ensuite sur <strong>Ouvrir</strong>.</p>
+        <div class="shots">
+          <figure><img src="images/install1.jpg" alt="Question Voulez-vous installer cette appli, bouton Installer entouré" loading="lazy"><figcaption>Appuyez sur Installer</figcaption></figure>
+          <figure><img src="images/install2.jpeg" alt="Installation en cours" loading="lazy"><figcaption>Patientez</figcaption></figure>
+          <figure><img src="images/installouvrir.jpg" alt="Application installée, bouton Ouvrir entouré" loading="lazy"><figcaption>Appuyez sur Ouvrir</figcaption></figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>Autoriser l’accès aux statistiques d’utilisation</h3>
+        <p>Au premier lancement, l’application a besoin d’accéder aux statistiques d’utilisation pour mesurer votre consommation de données (Wi-Fi et mobile).</p>
+        <p class="note"><strong>Aucune donnée personnelle, aucun message et aucun fichier n’est collecté.</strong></p>
+        <p>Appuyez sur <strong>OK</strong>. Dans la liste qui s’ouvre, trouvez <strong>Mon Eco conso</strong> et activez l’interrupteur. Revenez ensuite à l’application.</p>
+        <div class="shots">
+          <figure><img src="images/autorisation1.jpg" alt="Message Permission requise, bouton OK entouré" loading="lazy"><figcaption>Appuyez sur OK</figcaption></figure>
+          <figure><img src="images/autorisation2.jpg" alt="Mon Eco conso dans la liste, interrupteur désactivé" loading="lazy"><figcaption>Interrupteur désactivé</figcaption></figure>
+          <figure><img src="images/autorisation3.jpg" alt="Mon Eco conso dans la liste, interrupteur activé" loading="lazy"><figcaption>Interrupteur activé</figcaption></figure>
+        </div>
+
+        <details>
+          <summary>« L’appli s’est vu refuser l’accès »</summary>
+          <p>Certaines versions d’Android bloquent cette autorisation pour les applications installées hors du Play Store. Pour la débloquer :</p>
+          <p>Appuyez sur <strong>Fermer</strong>. Ouvrez les <strong>Paramètres</strong> du téléphone, puis <strong>Applications</strong>, puis <strong>Mon Eco conso</strong>. Appuyez sur les trois points en haut à droite et choisissez <strong>Autoriser les paramètres restreints</strong>. Revenez ensuite dans l’application et activez à nouveau l’interrupteur.</p>
+          <div class="shots">
+            <figure><img src="images/acces-refuse.jpeg" alt="Message L’appli s’est vu refuser l’accès" loading="lazy"></figure>
+          </div>
+        </details>
+      </li>
+
+      <li>
+        <h3>Saisir votre identifiant</h3>
+        <p>L’application vous demande ensuite votre identifiant. Entrez-le soigneusement, puis appuyez sur <strong>Valider</strong> pour activer votre participation.</p>
+        <p class="note">Utilisez l’identifiant personnel qui vous a été communiqué par l’équipe de recherche.</p>
+        <div class="shots">
+          <figure><img src="images/identifiant1.jpeg" alt="Écran de saisie de l’identifiant avec le bouton Valider" loading="lazy"></figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>Vérifier que tout fonctionne</h3>
+        <p>Une fois l’identifiant validé, l’application commence à enregistrer vos données de consommation. Elle fonctionne en arrière-plan : vous n’avez rien d’autre à faire.</p>
+      </li>
+    </ol>
+
+  </section>
+
+  <section id="video" aria-labelledby="titre-video">
+    <h2 id="titre-video">La vidéo de présentation</h2>
+    <!--
+      VIDÉO — deux possibilités :
+      1) YouTube (recommandé) : remplacez VOTRE_ID_VIDEO ci-dessous par l'identifiant de votre vidéo.
+         Exemple : pour https://www.youtube.com/watch?v=AbC123xyz, l'identifiant est AbC123xyz.
+      2) Fichier vidéo dans le dépôt (moins de 25 Mo) : déposez video.mp4 dans le dossier images/,
+         puis remplacez tout le bloc <div class="video">…</div> par :
+         <div class="video"><video controls playsinline preload="metadata" src="images/video.mp4"></video></div>
+    -->
+    <div class="video" data-youtube-id="VOTRE_ID_VIDEO">
+      <div class="placeholder">La vidéo sera bientôt disponible ici.</div>
+    </div>
+  </section>
+
+  <section id="utilisation" aria-labelledby="titre-utilisation">
+    <h2 id="titre-utilisation">Utiliser l’application pendant l’étude</h2>
+    <p>Pendant la première semaine, vous n’avez rien de particulier à faire. Vous pouvez explorer l’application, regarder les informations disponibles et vérifier qu’elle fonctionne correctement.</p>
+    <p>À la fin de cette première semaine, vous recevrez un e-mail qui annonce le début de l’expérimentation principale et donne les instructions détaillées pour la suite.</p>
+    <p>Pensez à garder l’application installée pendant toute la durée de l’étude.</p>
+  </section>
+
+  <section id="aide" aria-labelledby="titre-aide">
+    <h2 id="titre-aide">Besoin d’aide ?</h2>
+    <div class="help">
+      <p>Si vous rencontrez un problème pendant l’installation ou l’utilisation, écrivez à l’équipe de recherche :</p>
+      <p><a href="mailto:daniele.fares@unibg.it">daniele.fares@unibg.it</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Page d’information destinée aux participants de l’étude Mon Éco Conso.
+</footer>
+
+<script>
+  // Affiche la vidéo YouTube dès qu'un identifiant réel est renseigné
+  (function () {
+    var box = document.querySelector('.video[data-youtube-id]');
+    if (!box) return;
+    var id = box.getAttribute('data-youtube-id');
+    if (!id || id === 'VOTRE_ID_VIDEO') return;
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0';
+    f.title = 'Vidéo de présentation de l’application Mon Éco Conso';
+    f.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    f.loading = 'lazy';
+    box.innerHTML = '';
+    box.appendChild(f);
+  })();
+</script>
+</body>
+</html>
