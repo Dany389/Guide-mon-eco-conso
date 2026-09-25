@@ -10,44 +10,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #17324d;
-    --text: #2b3a4a;
-    --muted: #5d6b7a;
-    --paper: #fbfcfd;
-    --wash: #eaf1f7;
-    --line: #c9d7e4;
-    --go: #1f7a4d;
+    --ink: #1e4d2b;        /* vert forêt : titres, numéros */
+    --text: #1d231f;       /* presque noir : texte courant */
+    --muted: #55645a;
+    --paper: #ffffff;
+    --wash: #eef7ea;       /* vert très clair : encadrés */
+    --line: #cfe3c8;
+    --leaf: #4caf50;       /* vert de l’appli */
+    --go: #2e7d32;         /* vert bouton, lisible avec texte blanc */
     --go-ink: #ffffff;
-    --warn-bg: #fff4e0;
-    --warn-line: #e3a23b;
+    --warn-bg: #fff6e5;
+    --warn-line: #f0a33a;
+    color-scheme: light;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --ink: #dbe8f5; --text: #c9d4df; --muted: #93a3b3;
-      --paper: #13202c; --wash: #1c2c3b; --line: #2f4356;
-      --go: #3fae78; --go-ink: #0d1a14;
-      --warn-bg: #33291a; --warn-line: #c98a2c;
-    }
-  }
-  :root[data-theme="dark"] {
-    --ink: #dbe8f5; --text: #c9d4df; --muted: #93a3b3;
-    --paper: #13202c; --wash: #1c2c3b; --line: #2f4356;
-    --go: #3fae78; --go-ink: #0d1a14;
-    --warn-bg: #33291a; --warn-line: #c98a2c;
   }
   *, *::before, *::after { box-sizing: inherit; }
   html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 64px); }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
     margin: 0;
-    background: var(--paper);
+    background: #1f4f2c;
     color: var(--text);
     font-family: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 1.0625rem;
     line-height: 1.6;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 45% at 100% 0%, rgba(139,195,74,.30), transparent 70%),
+      radial-gradient(ellipse 60% 45% at 0% 100%, rgba(76,175,80,.30), transparent 70%),
+      linear-gradient(165deg, #173f23 0%, #245a31 50%, #2f6e3c 100%);
   }
   img { max-width: 100%; height: auto; }
   a { color: var(--go); }
@@ -56,7 +51,8 @@
   /* Navigation */
   nav {
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
-    background: var(--paper);
+    background: rgba(23,63,35,.82);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
   nav ul {
@@ -68,17 +64,25 @@
     color: var(--ink); text-decoration: none; font-weight: 700; font-size: .95rem;
   }
   nav a:hover { color: var(--go); }
+  nav { border-bottom: 1px solid rgba(255,255,255,.15); }
+  nav a { color: #e6f4de; }
+  nav a:hover { color: #ffffff; text-decoration: underline; }
 
   main { max-width: 44rem; margin: 0 auto; padding: 0 1rem 3rem; }
 
-  header.intro { padding: 2.5rem 0 1.5rem; }
+  header.intro { padding: 2.5rem 0 1.25rem; }
   header.intro h1 {
-    color: var(--ink); font-size: clamp(1.8rem, 6vw, 2.5rem);
+    color: #ffffff; font-size: clamp(1.8rem, 6vw, 2.5rem);
     line-height: 1.15; margin: 0 0 .75rem;
   }
-  header.intro p { margin: 0; max-width: 34rem; color: var(--muted); font-size: 1.125rem; }
+  header.intro p { margin: 0; max-width: 34rem; color: #d9efd2; font-size: 1.125rem; }
 
-  section { padding-top: 2rem; }
+  section {
+    background: #ffffff; border-radius: 18px;
+    padding: 1.5rem 1.25rem 1.25rem; margin-top: 1.25rem;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  }
+  @media (min-width: 46rem) { section { padding: 2rem 2rem 1.5rem; } }
   h2 { color: var(--ink); font-size: 1.5rem; line-height: 1.25; margin: 0 0 1rem; }
 
   /* Étapes : un fil vertical relie les numéros */
@@ -92,12 +96,12 @@
     position: absolute; left: 0; top: 0;
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
     display: grid; place-items: center;
-    background: var(--ink); color: var(--paper);
+    background: var(--go); color: #ffffff;
     font-weight: 700; font-size: 1.05rem;
   }
   ol.steps > li::after {
     content: ""; position: absolute; left: calc(1.125rem - 1px); top: 2.5rem; bottom: .25rem;
-    width: 2px; background: var(--line);
+    width: 2px; background: var(--leaf); opacity: .45;
   }
   ol.steps > li:last-child { padding-bottom: .5rem; }
   ol.steps > li:last-child::after { display: none; }
@@ -143,8 +147,8 @@
     list-style-position: inside;
   }
   details[open] summary { border-bottom: 1px solid var(--line); }
-  details > p, details > .shots { margin-left: 1rem; margin-right: 1rem; }
-  details > p:first-of-type { margin-top: .75rem; }
+  ol.steps details > p, ol.steps details > .shots { margin-left: 1rem; margin-right: 1rem; }
+  ol.steps details > p:first-of-type { margin-top: .75rem; }
   .shots figcaption { font-size: .875rem; }
 
   /* Vidéo */
@@ -168,15 +172,16 @@
   .help p:last-child { margin: 0; }
   .help a { font-weight: 700; word-break: break-all; }
 
-  footer { max-width: 44rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; color: var(--muted); font-size: .875rem; border-top: 1px solid var(--line); }
+  footer { max-width: 44rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; color: #cfe6c7; font-size: .875rem; }
+
 </style>
 </head>
 <body>
 
 <nav aria-label="Sections du guide">
   <ul>
-    <li><a href="#installation">Installation</a></li>
     <li><a href="#video">Vidéo</a></li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#utilisation">Utilisation</a></li>
     <li><a href="#aide">Aide</a></li>
   </ul>
@@ -188,8 +193,24 @@
     <p>Tout ce qu’il faut pour installer l’application sur votre smartphone et la faire fonctionner pendant l’étude. Gardez cette page, elle reste disponible à tout moment.</p>
   </header>
 
+  <section id="video" aria-labelledby="titre-video">
+    <h2 id="titre-video">Commencez par la vidéo</h2>
+    <p>Elle montre toute l’installation en quelques minutes. Les explications détaillées, étape par étape, se trouvent juste en dessous.</p>
+    <!--
+      VIDÉO — deux possibilités :
+      1) YouTube (recommandé) : remplacez VOTRE_ID_VIDEO ci-dessous par l'identifiant de votre vidéo.
+         Exemple : pour https://www.youtube.com/watch?v=AbC123xyz, l'identifiant est AbC123xyz.
+      2) Fichier vidéo dans le dépôt (moins de 25 Mo) : déposez video.mp4 dans le dossier images/,
+         puis remplacez tout le bloc <div class="video">…</div> par :
+         <div class="video"><video controls playsinline preload="metadata" src="images/video.mp4"></video></div>
+    -->
+    <div class="video" data-youtube-id="VOTRE_ID_VIDEO">
+      <div class="placeholder">La vidéo sera bientôt disponible ici.</div>
+    </div>
+  </section>
+
   <section id="installation" aria-labelledby="titre-installation">
-    <h2 id="titre-installation">Installer l’application</h2>
+    <h2 id="titre-installation">Le guide étape par étape</h2>
 
     <ol class="steps">
       <li>
@@ -277,20 +298,6 @@
 
   </section>
 
-  <section id="video" aria-labelledby="titre-video">
-    <h2 id="titre-video">La vidéo de présentation</h2>
-    <!--
-      VIDÉO — deux possibilités :
-      1) YouTube (recommandé) : remplacez VOTRE_ID_VIDEO ci-dessous par l'identifiant de votre vidéo.
-         Exemple : pour https://www.youtube.com/watch?v=AbC123xyz, l'identifiant est AbC123xyz.
-      2) Fichier vidéo dans le dépôt (moins de 25 Mo) : déposez video.mp4 dans le dossier images/,
-         puis remplacez tout le bloc <div class="video">…</div> par :
-         <div class="video"><video controls playsinline preload="metadata" src="images/video.mp4"></video></div>
-    -->
-    <div class="video" data-youtube-id="VOTRE_ID_VIDEO">
-      <div class="placeholder">La vidéo sera bientôt disponible ici.</div>
-    </div>
-  </section>
 
   <section id="utilisation" aria-labelledby="titre-utilisation">
     <h2 id="titre-utilisation">Utiliser l’application pendant l’étude</h2>
