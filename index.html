@@ -68,9 +68,10 @@
   nav a { color: #e6f4de; }
   nav a:hover { color: #ffffff; text-decoration: underline; }
 
-  main { max-width: 44rem; margin: 0 auto; padding: 0 1rem 3rem; }
+  main { max-width: 44rem; margin: 0 auto; padding: 0 .6rem 3rem; }
+  @media (min-width: 46rem) { main { padding: 0 1rem 3rem; } }
 
-  header.intro { padding: 2.5rem 0 1.25rem; }
+  header.intro { padding: 2.25rem .6rem 1rem; }
   header.intro h1 {
     color: #ffffff; font-size: clamp(1.8rem, 6vw, 2.5rem);
     line-height: 1.15; margin: 0 0 .75rem;
@@ -79,7 +80,7 @@
 
   section {
     background: #ffffff; border-radius: 18px;
-    padding: 1.5rem 1.25rem 1.25rem; margin-top: 1.25rem;
+    padding: 1.35rem 1rem 1rem; margin-top: 1rem;
     box-shadow: 0 6px 24px rgba(0,0,0,.18);
   }
   @media (min-width: 46rem) { section { padding: 2rem 2rem 1.5rem; } }
@@ -88,24 +89,21 @@
   /* Étapes : un fil vertical relie les numéros */
   ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
   ol.steps > li {
-    position: relative; counter-increment: step;
-    padding: 0 0 2.25rem 3.5rem;
+    counter-increment: step;
+    display: grid; grid-template-columns: 2.25rem 1fr; column-gap: .75rem;
+    padding: 1.25rem 0; border-top: 1px solid var(--line);
   }
+  ol.steps > li:first-child { border-top: 0; padding-top: .25rem; }
+  ol.steps > li > * { grid-column: 1 / -1; }
   ol.steps > li::before {
-    content: counter(step);
-    position: absolute; left: 0; top: 0;
+    content: counter(step); grid-column: 1; align-self: start;
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
     display: grid; place-items: center;
     background: var(--go); color: #ffffff;
     font-weight: 700; font-size: 1.05rem;
   }
-  ol.steps > li::after {
-    content: ""; position: absolute; left: calc(1.125rem - 1px); top: 2.5rem; bottom: .25rem;
-    width: 2px; background: var(--leaf); opacity: .45;
-  }
-  ol.steps > li:last-child { padding-bottom: .5rem; }
-  ol.steps > li:last-child::after { display: none; }
-  ol.steps h3 { color: var(--ink); font-size: 1.2rem; margin: .3rem 0 .5rem; line-height: 1.3; }
+  ol.steps > li > h3 { grid-column: 2; align-self: center; }
+  ol.steps h3 { color: var(--ink); font-size: 1.2rem; margin: 0 0 .75rem; line-height: 1.3; }
   ol.steps p { margin: 0 0 .75rem; }
 
   .btn {
@@ -117,17 +115,17 @@
 
   /* Captures d'écran : défilement horizontal sur petit écran */
   .shots {
-    display: flex; gap: 1rem; overflow-x: auto;
+    display: flex; flex-direction: column; align-items: center; gap: 1.1rem;
     padding: .25rem 0 1rem; margin-bottom: .5rem;
-    scroll-snap-type: x mandatory;
   }
-  .shots figure { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
+  .shots figure { margin: 0; width: 100%; max-width: 360px; text-align: center; }
+  .shots figure.tall { max-width: 250px; }
   .shots img {
-    display: block; width: 250px;
-    border: 1px solid var(--line); border-radius: 14px;
-    background: var(--wash);
+    display: block; width: 100%; margin: 0 auto;
+    border: 1px solid var(--line); border-radius: 14px; background: #fff;
   }
-  .shots figcaption { font-size: .875rem; color: var(--muted); margin-top: .35rem; max-width: 250px; }
+  .shots figcaption { font-size: .9rem; color: var(--muted); margin-top: .4rem; }
+  .qr { text-align: center; }
   .qr img { width: 150px; border-radius: 8px; border: 1px solid var(--line); background: #fff; padding: 6px; }
 
   .note {
@@ -143,13 +141,12 @@
     background: var(--wash); margin: 0 0 .6rem;
   }
   summary {
-    cursor: pointer; padding: .75rem 1rem; font-weight: 700; color: var(--ink);
+    cursor: pointer; padding: .75rem .85rem; font-weight: 700; color: var(--ink);
     list-style-position: inside;
   }
   details[open] summary { border-bottom: 1px solid var(--line); }
-  ol.steps details > p, ol.steps details > .shots { margin-left: 1rem; margin-right: 1rem; }
+  ol.steps details > p, ol.steps details > .shots { margin-left: .85rem; margin-right: .85rem; }
   ol.steps details > p:first-of-type { margin-top: .75rem; }
-  .shots figcaption { font-size: .875rem; }
 
   /* Vidéo */
   .video {
@@ -244,8 +241,8 @@
           <p>Sur l’écran « Danger », cochez la case « Je suis conscient des risques… », puis appuyez sur <strong>OK</strong>.</p>
           <p>Si l’écran « Application risquée » apparaît ensuite, appuyez sur <strong>Sauter</strong> pour continuer l’installation.</p>
           <div class="shots">
-            <figure><img src="images/xiaomi-danger.jpeg" alt="Écran Danger de Xiaomi avec la case à cocher et le bouton OK" loading="lazy"></figure>
-            <figure><img src="images/xiaomi-miprotect.jpeg" alt="Écran Application risquée de Mi Protect avec les boutons Sauter et Scanner" loading="lazy"></figure>
+            <figure class="tall"><img src="images/xiaomi-danger.jpeg" alt="Écran Danger de Xiaomi avec la case à cocher et le bouton OK" loading="lazy"></figure>
+            <figure class="tall"><img src="images/xiaomi-miprotect.jpeg" alt="Écran Application risquée de Mi Protect avec les boutons Sauter et Scanner" loading="lazy"></figure>
           </div>
         </details>
       </li>
@@ -276,7 +273,7 @@
           <p>Certaines versions d’Android bloquent cette autorisation pour les applications installées hors du Play Store. Pour la débloquer :</p>
           <p>Appuyez sur <strong>Fermer</strong>. Ouvrez les <strong>Paramètres</strong> du téléphone, puis <strong>Applications</strong>, puis <strong>Mon Eco conso</strong>. Appuyez sur les trois points en haut à droite et choisissez <strong>Autoriser les paramètres restreints</strong>. Revenez ensuite dans l’application et activez à nouveau l’interrupteur.</p>
           <div class="shots">
-            <figure><img src="images/acces-refuse.jpeg" alt="Message L’appli s’est vu refuser l’accès" loading="lazy"></figure>
+            <figure class="tall"><img src="images/acces-refuse.jpeg" alt="Message L’appli s’est vu refuser l’accès" loading="lazy"></figure>
           </div>
         </details>
       </li>
